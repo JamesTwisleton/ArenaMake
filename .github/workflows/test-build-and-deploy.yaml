@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Test, build and deploy
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -24,6 +24,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Run tests
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+      run: deno test --allow-read
 
     - name: Google Auth
       id: auth
