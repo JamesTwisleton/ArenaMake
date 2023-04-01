@@ -17,6 +17,6 @@ router
     .put("/api/sheet/:id", updateSheet) // Update a sheet
     .delete("/api/sheet/:id", deleteSheet) // Delete a sheet
     .get("/api/sheets", getSheets) // Get all sheets
-    .get("/api/sheets/enabled/count", getEnabledSheetsCount); // Get incomplete sheet count
+    .get("/api/sheets/enabled/count", getEnabledSheetsCount); // Get enabled sheet count
 
 export default router;
