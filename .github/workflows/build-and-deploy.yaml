@@ -6,13 +6,13 @@ on:
       - main
 
 env:
-  PROJECT_ID: {{ secrets.GCP_PROJECT_ID }}
-  GAR_LOCATION: {{ secrets.GCP_REGION }}
-  REPOSITORY: {{ secrets.GAR_REPOSITORY }}
-  SERVICE: {{ secrets.GCP_SERVICE }}
-  REGION: {{ secrets.GCP_REGION }}
-  MONGO_APP_ID: {{secrets.MONGO_APP_ID }}
-  MONGO_DATA_API_KEY: {{ secrets.MONGO_DATA_API_KEY }}
+  PROJECT_ID: secrets.GCP_PROJECT_ID
+  GAR_LOCATION: secrets.GCP_REGION
+  REPOSITORY: secrets.GAR_REPOSITORY
+  SERVICE: secrets.GCP_SERVICE
+  REGION: secrets.GCP_REGION
+  MONGO_APP_ID: secrets.MONGO_APP_ID
+  MONGO_DATA_API_KEY: secrets.MONGO_DATA_API_KEY
 
 jobs:
   deploy:
