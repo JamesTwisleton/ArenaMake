@@ -1,11 +1,19 @@
-# fresh project
+# ArenaMake
 
-### Usage
+### Prerequisites
+Deno CLI
 
 Start the project:
 
 ```
-deno task start
+deno run --allow-net --allow-read server.ts
 ```
 
-This will watch the project directory and restart as necessary.
+`POST localhost:3000/api/todos`
+```
+{
+  "title": "Todo 1",
+  "complete": false,
+  "todoId": 1
+}
+```
