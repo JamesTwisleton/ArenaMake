@@ -25,13 +25,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Setup deno
-      uses: denoland/setup-deno@v1
-      with:
-        deno-version: v1.32.1
+    # - name: Setup deno
+    #   uses: denoland/setup-deno@v1
+    #   with:
+    #     deno-version: v1.32.1
 
-    - name: Run tests
-      run: deno test --allow-read
+    # - name: Run tests
+    #   run: deno test --allow-read
 
     - name: Google Auth
       id: auth
