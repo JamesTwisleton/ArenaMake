@@ -42,7 +42,6 @@ const addTodo = async ({
         };
         options.body = JSON.stringify(query);
         const dataResponse = await fetch(URI, options);
-        console.log(dataResponse);
         const { insertedId } = await dataResponse.json();
         
         response.status = 201;
@@ -59,5 +58,178 @@ const addTodo = async ({
       };
     }
   };
+
+const getTodos = async ({ response }: { response: any }) => {
+  try {
+    const URI = `${BASE_URI}/find`;
+    const query = {
+      collection: COLLECTION,
+      database: DATABASE,
+      dataSource: DATA_SOURCE
+    };
+    options.body = JSON.stringify(query);
+    const dataResponse = await fetch(URI, options);
+    const allTodos = await dataResponse.json();
+
+    if (allTodos) {
+      response.status = 200;
+      response.body = {
+        success: true,
+        data: allTodos,
+      };
+    } else {
+      response.status = 500;
+      response.body = {
+        success: false,
+        msg: "Internal Server Error",
+      };
+    }
+  } catch (err) {
+    response.body = {
+      success: false,
+      msg: err.toString(),
+    };
+  }
+};
+
+const getTodo = async ({
+  params,
+  response,
+}: {
+  params: { id: string };
+  response: any;
+}) => {
+  const URI = `${BASE_URI}/findOne`;
+  const query = {
+    collection: COLLECTION,
+    database: DATABASE,
+    dataSource: DATA_SOURCE,
+    filter: { todoId: params.id }
+  };
+  options.body = JSON.stringify(query);
+  const dataResponse = await fetch(URI, options);
+  const todo = await dataResponse.json();
   
-  export { addTodo };
+  if (todo) {
+    response.status = 200;
+    response.body = {
+      success: true,
+      data: todo,
+    };
+  } else {
+    response.status = 404;
+    response.body = {
+      success: false,
+      msg: "No todo found",
+    };
+  }
+};
+
+const updateTodo = async ({
+  params,
+  request,
+  response,
+}: {
+  params: { id: string };
+  request: any;
+  response: any;
+}) => {
+  try {
+    const body = await request.body();
+    const { title, complete } = await body.value;
+    const URI = `${BASE_URI}/updateOne`;
+    const query = {
+      collection: COLLECTION,
+      database: DATABASE,
+      dataSource: DATA_SOURCE,
+      filter: { todoId: parseInt(params.id) },
+      update: { $set: { title, complete } }
+    };
+    options.body = JSON.stringify(query);
+    const dataResponse = await fetch(URI, options);
+    const todoUpdated = await dataResponse.json();
+    
+    response.status = 200;
+    response.body = { 
+      success: true,
+      todoUpdated 
+    };
+    
+  } catch (err) {
+    response.body = {
+      success: false,
+      msg: err.toString(),
+    };
+  }
+};
+
+const deleteTodo = async ({
+  params,
+  response,
+}: {
+  params: { id: string };
+  response: any;
+}) => {
+  try {
+    const URI = `${BASE_URI}/deleteOne`;
+    const query = {
+      collection: COLLECTION,
+      database: DATABASE,
+      dataSource: DATA_SOURCE,
+      filter: { todoId: params.id }
+    };
+    options.body = JSON.stringify(query);
+    const dataResponse = await fetch(URI, options);
+    const todoDeleted = await dataResponse.json();
+
+    response.status = 201;
+    response.body = {
+      todoDeleted
+    };
+  } catch (err) {
+    response.body = {
+      success: false,
+      msg: err.toString(),
+    };
+  }
+};
+
+const getIncompleteTodos = async ({ response }: { response: any }) => {
+  const URI = `${BASE_URI}/aggregate`;
+  const pipeline = [
+    {
+      $match: {
+        complete: false
+      }
+    }, 
+    {
+      $count: 'incomplete'
+    }
+  ];
+  const query = {
+    dataSource: DATA_SOURCE,
+    database: DATABASE,
+    collection: COLLECTION,
+    pipeline
+  };
+
+  options.body = JSON.stringify(query);
+  const dataResponse = await fetch(URI, options);
+  const incompleteCount = await dataResponse.json();
+  
+  if (incompleteCount) {
+    response.status = 200;
+    response.body = {
+      success: true,
+      incompleteCount,
+    };
+  } else {
+    response.status = 404;
+    response.body = {
+      success: false,
+      msg: "No incomplete todos found",
+    };
+  }
+};
+  
+export { addTodo, getTodos, getTodo, updateTodo, deleteTodo, getIncompleteTodos };
