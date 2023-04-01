@@ -10,6 +10,17 @@ import {
 
 const router = new Router();
 
+router.get("/", (ctx) => {
+    ctx.response.body = `<!DOCTYPE html>
+      <html>
+        <head><title>ArenaMake</title><head>
+        <body>
+          <h1>Coming soon...?</h1>
+        </body>
+      </html>
+    `;
+  });
+
 // Implement routes
 router
     .post("/api/sheet", addSheet) // Add a sheet
