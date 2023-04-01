@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
 import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
-import { addSheet } from "../../../controllers/sheets.ts";
+import { addSheet } from "../routes/api/s/[sheetId].tsx";
 
 const TEST_INSERTED_ID = 1234
 
