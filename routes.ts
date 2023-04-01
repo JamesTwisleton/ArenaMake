@@ -15,7 +15,7 @@ router.get("/", (ctx) => {
       <html>
         <head><title>ArenaMake</title><head>
         <body>
-          <h1>Coming soon...?</h1>
+          <h1>Coming soon...?!</h1>
         </body>
       </html>
     `;
