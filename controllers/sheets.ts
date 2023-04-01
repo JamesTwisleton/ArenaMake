@@ -4,8 +4,8 @@ const { MONGO_DATA_API_KEY, MONGO_APP_ID } = config();
 const BASE_URI = `https://eu-west-2.aws.data.mongodb-api.com/app/${MONGO_APP_ID}/endpoint/data/v1/action`;
 
 const DATA_SOURCE = "Cluster0";
-const DATABASE = "todo_db";
-const COLLECTION = "todos";
+const DATABASE = "arena_db";
+const COLLECTION = "sheets";
 
 const options = {
   method: "POST",
@@ -16,7 +16,7 @@ const options = {
   body: ""
 };
 
-const addTodo = async ({
+const addSheet = async ({
     request,
     response,
   }: {
@@ -32,13 +32,13 @@ const addTodo = async ({
         };
       } else {
         const body = await request.body();
-        const todo = await body.value;
+        const sheet = await body.value;
         const URI = `${BASE_URI}/insertOne`;
         const query = {
           collection: COLLECTION,
           database: DATABASE,
           dataSource: DATA_SOURCE,
-          document: todo
+          document: sheet
         };
         options.body = JSON.stringify(query);
         const dataResponse = await fetch(URI, options);
@@ -47,7 +47,7 @@ const addTodo = async ({
         response.status = 201;
         response.body = {
           success: true,
-          data: todo,
+          data: sheet,
           insertedId
         };
       }
@@ -59,7 +59,7 @@ const addTodo = async ({
     }
   };
 
-const getTodos = async ({ response }: { response: any }) => {
+const getSheets = async ({ response }: { response: any }) => {
   try {
     const URI = `${BASE_URI}/find`;
     const query = {
@@ -69,13 +69,13 @@ const getTodos = async ({ response }: { response: any }) => {
     };
     options.body = JSON.stringify(query);
     const dataResponse = await fetch(URI, options);
-    const allTodos = await dataResponse.json();
+    const allSheets = await dataResponse.json();
 
-    if (allTodos) {
+    if (allSheets) {
       response.status = 200;
       response.body = {
         success: true,
-        data: allTodos,
+        data: allSheets,
       };
     } else {
       response.status = 500;
@@ -92,7 +92,7 @@ const getTodos = async ({ response }: { response: any }) => {
   }
 };
 
-const getTodo = async ({
+const getSheet = async ({
   params,
   response,
 }: {
@@ -104,28 +104,28 @@ const getTodo = async ({
     collection: COLLECTION,
     database: DATABASE,
     dataSource: DATA_SOURCE,
-    filter: { todoId: params.id }
+    filter: { sheetId: params.id }
   };
   options.body = JSON.stringify(query);
   const dataResponse = await fetch(URI, options);
-  const todo = await dataResponse.json();
+  const sheet = await dataResponse.json();
   
-  if (todo) {
+  if (sheet) {
     response.status = 200;
     response.body = {
       success: true,
-      data: todo,
+      data: sheet,
     };
   } else {
     response.status = 404;
     response.body = {
       success: false,
-      msg: "No todo found",
+      msg: "No sheet found",
     };
   }
 };
 
-const updateTodo = async ({
+const updateSheet = async ({
   params,
   request,
   response,
@@ -142,17 +142,17 @@ const updateTodo = async ({
       collection: COLLECTION,
       database: DATABASE,
       dataSource: DATA_SOURCE,
-      filter: { todoId: parseInt(params.id) },
+      filter: { sheetId: params.id },
       update: { $set: { title, complete } }
     };
     options.body = JSON.stringify(query);
     const dataResponse = await fetch(URI, options);
-    const todoUpdated = await dataResponse.json();
+    const sheetUpdated = await dataResponse.json();
     
     response.status = 200;
     response.body = { 
       success: true,
-      todoUpdated 
+      sheetUpdated 
     };
     
   } catch (err) {
@@ -163,7 +163,7 @@ const updateTodo = async ({
   }
 };
 
-const deleteTodo = async ({
+const deleteSheet = async ({
   params,
   response,
 }: {
@@ -176,15 +176,15 @@ const deleteTodo = async ({
       collection: COLLECTION,
       database: DATABASE,
       dataSource: DATA_SOURCE,
-      filter: { todoId: params.id }
+      filter: { sheetId: params.id }
     };
     options.body = JSON.stringify(query);
     const dataResponse = await fetch(URI, options);
-    const todoDeleted = await dataResponse.json();
+    const sheetDeleted = await dataResponse.json();
 
     response.status = 201;
     response.body = {
-      todoDeleted
+      sheetDeleted
     };
   } catch (err) {
     response.body = {
@@ -194,7 +194,7 @@ const deleteTodo = async ({
   }
 };
 
-const getIncompleteTodos = async ({ response }: { response: any }) => {
+const getEnabledSheetsCount = async ({ response }: { response: any }) => {
   const URI = `${BASE_URI}/aggregate`;
   const pipeline = [
     {
@@ -203,7 +203,7 @@ const getIncompleteTodos = async ({ response }: { response: any }) => {
       }
     }, 
     {
-      $count: 'incomplete'
+      $count: 'enabled'
     }
   ];
   const query = {
@@ -227,9 +227,9 @@ const getIncompleteTodos = async ({ response }: { response: any }) => {
     response.status = 404;
     response.body = {
       success: false,
-      msg: "No incomplete todos found",
+      msg: "No enabled sheets found",
     };
   }
 };
   
-export { addTodo, getTodos, getTodo, updateTodo, deleteTodo, getIncompleteTodos };
+export { addSheet, getSheets, getSheet, updateSheet, deleteSheet, getEnabledSheetsCount };
