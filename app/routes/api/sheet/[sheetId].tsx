@@ -1,6 +1,6 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
 
-import { getSheet, addSheet, updateSheet, deleteSheet } from "../../../lib/sheet_functions.tsx"
+import { getSheet, addSheet, updateSheet, deleteSheet } from "../../../functions/sheet_functions.tsx"
 
 export const handler: Handlers = {
   async GET(_req: Request, _ctx: HandlerContext) {
@@ -8,7 +8,7 @@ export const handler: Handlers = {
   },
 
   async POST(_req: Request, _ctx: HandlerContext) {
-    return await addSheet(_req);
+    return await addSheet(await _req.json());
   },
 
   async PUT(_req: Request, _ctx: HandlerContext) {
