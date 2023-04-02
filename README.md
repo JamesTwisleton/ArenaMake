@@ -1,5 +1,5 @@
 # ArenaMake
-A webapp to manage DND player sheets. Currently mostly a CRUD API only...check out the [Figma](https://www.figma.com/file/aSFJhuZY0e484BVgcQgRgm?node-id=0%3A1&comments-enabled=1&viewer=1&locale=en)!
+A webapp to manage DND player sheets. Currently mostly a CRUD API only...check out the [Figma](https://www.figma.com/file/aSFJhuZY0e484BVgcQgRgm?node-id=0%3A1&comments-enabled=1&viewer=1&locale=en) for roadmap!
 ## Prerequisites
 * [Deno](https://deno.land)
 * [Docker](https://www.docker.com/products/docker-desktop/)
