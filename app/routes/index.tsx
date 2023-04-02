@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>ArenaMake</title>
+        <title>ArenaMake - Coming Soon...</title>
       </Head>
       <div class="p-4 mx-auto max-w-screen-md">
         <img
