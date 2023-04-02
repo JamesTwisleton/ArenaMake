@@ -1,25 +1,28 @@
 # ArenaMake
-A webapp to manage DND player sheets
+A webapp to manage DND player sheets. Currently mostly a CRUD API only...
 ## Prerequisites
 * [Deno](https://deno.land)
-* [VSCode](https://code.visualstudio.com)
-* [Thunder Client extension for VSCode](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)
+* [Docker](https://www.docker.com/products/docker-desktop/)
+* A rest client to make requests ([RapidAPI](https://paw.cloud/), [Postman](https://www.postman.com/downloads/).etc)
+
 
 ## Getting started
-* Create a `.env` file in the project directory, in the same format as [.env.example](.env.example)
-* [Import](https://github.com/rangav/thunder-client-support#how-to-import-a-collection) the [Thunder Client collection](thunder-collection_ArenaMake.json)
+* Create a `.env` file in the `app` directory, in the same format as [.env.example](app/.env.example)
 
-* Start the project:
-
-    ```
-    deno run --allow-net --allow-read server.ts
-    ```
-* Use Thunder Client to try out the endpoints
+* In the `app` directory
+  ```
+  docker compose -f docker-compose.yml build && docker compose up
+  ```
+* See the frontend, or lack thereof, on http://localhost:8000
+* Use the following links to see example API requests.
+  * [Add sheet](https://paw.pt/hJBBBboa)
+  * [Get sheet](https://paw.pt/hJBCaUEz)
+  * [Update sheet](https://paw.pt/hJBCjcGg)
+  * [Delete sheet](https://paw.pt/hJBCoB3f)
+  
+  Replace `https://arenamake-z76ei6qi4a-nw.a.run.app` with `localhost:8000` to run these requests against your local environment.
 
 ## TODO
-
-REPLACING OAK WITH FRESH: 
-HAVE ADDED BACK THE GET ENDPOINT, NOW NEED TO ADD THE REST OF THE ENDPOINTS, ADD TESTS, FIX DOCKER + GITHUB ACTIONS DEPLOYMENT
 
 * tests for the other endpoints
 * schema validation
