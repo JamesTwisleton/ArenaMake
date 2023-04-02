@@ -6,7 +6,7 @@ A webapp to manage DND player sheets. Currently mostly a CRUD API only...
 * A rest client to make requests ([RapidAPI](https://paw.cloud/), [Postman](https://www.postman.com/downloads/).etc)
 
 
-## Getting started
+## Local development
 * Create a `.env` file in the `app` directory, in the same format as [.env.example](app/.env.example)
 
 * In the `app` directory
