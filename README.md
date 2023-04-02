@@ -17,6 +17,10 @@ A webapp to manage DND player sheets
 * Use Thunder Client to try out the endpoints
 
 ## TODO
+
+REPLACING OAK WITH FRESH: 
+HAVE ADDED BACK THE GET ENDPOINT, NOW NEED TO ADD THE REST OF THE ENDPOINTS, ADD TESTS, FIX DOCKER + GITHUB ACTIONS DEPLOYMENT
+
 * tests for the other endpoints
 * schema validation
 * auth 

@@ -10,11 +10,14 @@ env:
   REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
   SERVICE: ${{ secrets.GCP_SERVICE }}
   REGION: ${{ secrets.GCP_REGION }}
-  MONGO_APP_ID: ${{ secrets.MONGO_APP_ID }}
-  MONGO_DATA_API_KEY: ${{ secrets.MONGO_DATA_API_KEY }}
+
+defaults:
+ run:
+  working-directory: ./app
 
 jobs:
   deploy:
+    
     name: Test, build and deploy
     permissions:
       contents: 'read'
@@ -27,9 +30,15 @@ jobs:
 
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
+ 
       with:
-        envkey_MONGO_APP_ID: ${{ env.MONGO_APP_ID }}
-        envkey_MONGO_DATA_API_KEY: ${{ env.MONGO_DATA_API_KEY }}
+        directory: app
+        envkey_MONGO_APP_ID: ${{ secrets.MONGO_APP_ID }}
+        envkey_MONGO_DATA_API_KEY: ${{ secrets.MONGO_DATA_API_KEY }}
+        envkey_MONGO_URI: ${{ secrets.MONGO_URI }} 
+        envkey_MONGO_DATA_SOURCE: ${{ secrets.MONGO_DATA_SOURCE }} 
+        envkey_MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }} 
+        envkey_MONGO_SHEETS_COLLECTION: ${{ secrets.MONGO_SHEETS_COLLECTION }} 
 
     - name: Setup deno
       uses: denoland/setup-deno@v1
