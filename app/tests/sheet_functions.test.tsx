@@ -1,4 +1,7 @@
 import { config } from "https://deno.land/x/dotenv/mod.ts";
+const {
+  MONGO_APP_ID,
+} = config();
 import { assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
 import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
 import {
@@ -8,31 +11,27 @@ import {
   updateSheet,
 } from "../functions/sheet_functions.tsx";
 
-const {
-  MONGO_APP_ID,
-} = config();
-const TEST_INSERTED_ID = 1234;
-
 mf.install();
-mf.mock(
-  `POST@/app/${MONGO_APP_ID}/endpoint/data/v1/action/insertOne`,
-  (_req) => {
-    // return new Response(`{"wow":"cool"}`);
 
-    const responseBody = JSON.stringify({
-      insertedId: TEST_INSERTED_ID,
-    });
 
-    const responseInit: ResponseInit = {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    };
+Deno.test("Sheet insertion: return 201 and inserted data on success", async () => {
+  const TEST_INSERTED_ID = 1234;
+  mf.mock(
+    `POST@/app/${MONGO_APP_ID}/endpoint/data/v1/action/insertOne`,
+    (_req) => {
+      const responseBody = JSON.stringify({
+        insertedId: TEST_INSERTED_ID,
+      });
+  
+      const responseInit: ResponseInit = {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      };
+  
+      return new Response(responseBody, responseInit);
+    },
+  );
 
-    return new Response(responseBody, responseInit);
-  },
-);
-
-Deno.test("Should successfully insert a new sheet and return the inserted data", async () => {
   const sheet = { sheetId: "value", "data": "wow" };
   const response = await addSheet(sheet);
 
@@ -40,27 +39,57 @@ Deno.test("Should successfully insert a new sheet and return the inserted data",
   assertEquals(
     await response.text(),
     `{
-              success: true,
-              data: ${JSON.stringify(sheet)},
-              insertedId: "${TEST_INSERTED_ID}"
-            }`,
+          success: true,
+          data: ${JSON.stringify(sheet)},
+          insertedId: "${TEST_INSERTED_ID}"
+          }`,
   );
+  mf.reset();
 });
 
-// Deno.test("add sheet endpoint should return a 400 status when request has no body", async () => {
-//   const request: any = {
-//     "hasBody": false,
-//   };
+Deno.test("Sheet insertion: return 502 when mongo returns a non OK response", async () => {
+  mf.mock(
+    `POST@/app/${MONGO_APP_ID}/endpoint/data/v1/action/insertOne`,
+    (_req) => {
+      const responseBody = JSON.stringify({
+        error: true,
+        message: "ERROR!",
+      });
+    
+      const responseInit = {
+        status: 502,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+    
+      return new Response(responseBody, responseInit);
+    },
+  );
 
-//   const response = await addSheet(request);
-//   console.log(response)
-//   // assertEquals(response.status, 400);
 
-//   // assertEquals(response.body, {
-//   //   success: false,
-//   //   msg: "No Data",
-//   // });
-// });
+  const sheet = {"sheetId":"wow","data":"wow"};
+  const response = await addSheet(sheet);
+
+  assertEquals(response.status, 502);
+  assertEquals(await response.text(), "Sheet insertion failed!");
+});
+
+Deno.test("Sheet insertion: return 503 when an unknown error occurs", async () => {
+  mf.mock(
+    `POST@/app/${MONGO_APP_ID}/endpoint/data/v1/action/insertOne`,
+    (_req) => {
+      throw new Error("EXPECTED_TEST_ERROR");
+    },
+  );
+
+
+  const sheet = {"sheetId":"wow","data":"wow"};
+  const response = await addSheet(sheet);
+
+  assertEquals(response.status, 503);
+  assertEquals(await response.text(), "An unknown error occurred!");
+});
 
 // Deno.test("add sheet endpoint should return a 201 status and appropriate response body when request is valid", async () => {
 //   const requestBody = {

@@ -32,22 +32,24 @@ const addSheet = async (sheet: Sheet) => {
     const dataResponse = await fetch(URI, HTTP_OPTIONS);
     
     const { insertedId } = await dataResponse.json();
-    
-    return new Response(
-      `{
-              success: true,
-              data: ${JSON.stringify(sheet)},
-              insertedId: "${insertedId}"
-            }`,
-      { status: 201 },
-    );
-  } catch (err) {
-    console.log(err);
-    console.log("An error occurred: " + err.message);
-    console.log("Full error trace: " + err);
-    if (err.message === "Unexpected end of JSON input") {
-      return new Response("Invalid request!", { status: 400 });
+
+    if(dataResponse.ok) {
+      return new Response(`{
+          success: true,
+          data: ${JSON.stringify(sheet)},
+          insertedId: "${insertedId}"
+          }`,
+        { status: 201 },
+      );
     }
+
+    return new Response(
+      "Sheet insertion failed!",
+      { status: 502 },
+    );
+  
+  } catch (err) {
+    console.log("An error occurred: " + err);
     return new Response("An unknown error occurred!", { status: 503 });
   }
 };
