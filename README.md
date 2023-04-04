@@ -1,5 +1,8 @@
 # ArenaMake
 A webapp to manage DND player sheets. Currently mostly a CRUD API only...check out the [Figma](https://www.figma.com/file/aSFJhuZY0e484BVgcQgRgm?node-id=0%3A1&comments-enabled=1&viewer=1&locale=en) for roadmap!
+
+Live at https://arenamake.app
+
 ## Prerequisites
 * [Deno](https://deno.land)
 * [Docker](https://www.docker.com/products/docker-desktop/)
@@ -15,12 +18,12 @@ A webapp to manage DND player sheets. Currently mostly a CRUD API only...check o
   ```
 * See the frontend, or lack thereof, on http://localhost:8000
 * Use the following links to see example API requests.
-  * [Add sheet](https://paw.pt/hJBBBboa)
-  * [Get sheet](https://paw.pt/hJBCaUEz)
-  * [Update sheet](https://paw.pt/hJBCjcGg)
-  * [Delete sheet](https://paw.pt/hJBCoB3f)
+  * [Add sheet](https://paw.pt/hJVycy6T)
+  * [Get sheet](https://paw.pt/hJVymvUt)
+  * [Update sheet](https://paw.pt/hJVyrDK1)
+  * [Delete sheet](https://paw.pt/hJVyzzWO)
   
-  Replace `https://arenamake-z76ei6qi4a-nw.a.run.app` with `localhost:8000` to run these requests against your local environment.
+  Replace `https://arenamake.app` with `localhost:8000` to run these requests against your local environment.
 
 ## TODO
 
