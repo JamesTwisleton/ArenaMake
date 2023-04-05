@@ -41,6 +41,7 @@ jobs:
         envkey_MONGO_DATA_SOURCE: ${{ secrets.MONGO_DATA_SOURCE }} 
         envkey_MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }} 
         envkey_MONGO_SHEETS_COLLECTION: ${{ secrets.MONGO_SHEETS_COLLECTION }} 
+        envkey_APP_BASE_URI: ${{ secrets.APP_BASE_URI }}
 
     - name: Setup deno
       uses: denoland/setup-deno@v1
