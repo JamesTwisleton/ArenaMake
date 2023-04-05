@@ -4,7 +4,7 @@ import { getSheet, addSheet, updateSheet, deleteSheet } from "../../../functions
 
 export const handler: Handlers = {
   async GET(_req: Request, _ctx: HandlerContext) {
-    return await getSheet(_ctx.params.sheetId);
+    return await getSheet(_ctx.params.sheetId); 
   },
 
   async POST(_req: Request, _ctx: HandlerContext) {
