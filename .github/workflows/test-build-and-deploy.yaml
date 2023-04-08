@@ -49,7 +49,7 @@ jobs:
         deno-version: v1.32.1
 
     - name: Run tests
-      run: deno test --allow-read
+      run: deno task test
 
     - name: Google Auth
       id: auth
